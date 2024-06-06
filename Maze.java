@@ -13,7 +13,6 @@ public class Maze {
                 {0,0,0,0,0,0,0,1,0,0}
         };
 
-
         MazeSolver maze1 = new MazeSolver(map1);
         System.out.println("\nMap 1:\n"+maze1.draw());
         System.out.println("\nDistance from entrance:\n"+maze1.draw(maze1.distanceMap()));

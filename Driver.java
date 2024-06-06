@@ -26,10 +26,19 @@ public class Driver {
 //
 //        int test2 = look2.Binary(data, 11);
 //        System.out.println("\nIndex: "+test2+"\nNumber: "+data[test2]+"\n.........\n");
+//
+//        Stack<String> stack = new Stack<>();
+//
+//        stack.push("Xcode");
+//        System.out.println(stack.toString()+"\n"+stack.search("Xcode"));
 
-        Stack<String> stack = new Stack<>();
+        WagnerFischer spellCheck = new WagnerFischer();
+        String[][] suggestions = spellCheck.run("wrld");  //not working
 
-        stack.push("Xcode");
-        System.out.println(stack.toString()+"\n"+stack.search("Xcode"));
+        for (String[] x : suggestions){
+            System.out.println(x[0]+" "+x[1]);
+        }
+
+        System.out.println("wrld".compareTo("varieties"));
     }
 }
