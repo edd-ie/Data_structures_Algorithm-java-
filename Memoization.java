@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @author _edd.ie_
@@ -90,10 +92,77 @@ public class Memoization {
         return memo.get(m+","+n);
     }
 
+    private boolean canRecSlow(Integer target, ArrayList<Integer> data){
+
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        for (Integer datum : data) {
+            if (Objects.equals(datum, target)) return true;
+            if (datum < target) arr.add(datum);
+        }
+
+        return !arr.isEmpty() &&
+                canRecSlow(target - arr.removeFirst(), arr);
+    }
+
+    public boolean canSumUnique(int target, int[] array){
+        if(array.length == 0) return false;
+        boolean found = false;
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        for(int x : array){
+            if(x == target) return true;
+            if(x < target) arr.add(x);
+        }
+
+        for(int i = 0; i < arr.size() && !found; i++){
+            int y = arr.remove(i--);
+            if(arr.isEmpty()) return false;
+            found = canRecSlow(target-y, arr);
+        }
+
+
+        return found;
+    }
+
+    public boolean canSumReuse(int target, int[] data){
+        if(target == 0) return true;
+        if(target < 0) return false;
+
+        for(int val : data){
+            if(canSumReuse(target-val, data)) return true;
+        }
+
+        return false;
+    }
+
+    private boolean canSumMemo(int target, int[] data, HashMap<Integer, Boolean>map){
+        if(map.containsKey(target)) return true;
+        if(target == 0) return true;
+        if(target < 0) return false;
+
+        for(int val : data){
+            if(canSumMemo(target-val, data, map)) {
+                map.put(target, true);
+                return true;
+            }
+        }
+
+        map.put(target, false);
+        return false;
+    }
+
+    public boolean canSumFast(int target, int[] data){
+        HashMap<Integer, Boolean> check = new HashMap<>();
+
+        return canSumMemo(target, data, check);
+    }
+
     public static void main(String[] args) {
         Memoization obj = new Memoization();
         int test1 = obj.fibSlow(5);
         long test2 = obj.fibFast(50);
+
 
         System.out.println("Slow test : " + test1);
         System.out.println("Fast test : " + test2);
@@ -103,5 +172,16 @@ public class Memoization {
 
         System.out.println("Grid travel : " + travel1);
         System.out.println("Fast travel : " + travel2);
+
+        int target = 300;
+        int[] data = {7,14};
+        boolean sum1 = obj.canSumUnique(target, data);
+        System.out.println("Sum RecUnique : " + sum1);
+
+//        boolean sum2 = obj.canSumReuse(target, data);
+//        System.out.println("Sum RecReuse : " + sum2); //so slow
+
+        boolean sum3 = obj.canSumFast(target, data);
+        System.out.println("Sum RecMemo : " + sum3);
     }
 }
