@@ -130,18 +130,20 @@ public class Memoization {
         if(target < 0) return false;
 
         for(int val : data){
-            if(canSumReuse(target-val, data)) return true;
+            if(val!=0 && canSumReuse(target-val, data)) return true;
         }
 
         return false;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private boolean canSumMemo(int target, int[] data, HashMap<Integer, Boolean>map){
         if(map.containsKey(target)) return true;
         if(target == 0) return true;
         if(target < 0) return false;
 
         for(int val : data){
+            if(val == 0) continue;
             if(canSumMemo(target-val, data, map)) {
                 map.put(target, true);
                 return true;
@@ -173,8 +175,8 @@ public class Memoization {
         System.out.println("Grid travel : " + travel1);
         System.out.println("Fast travel : " + travel2);
 
-        int target = 300;
-        int[] data = {7,14};
+        int target = 20;
+        int[] data = {0,7,14};
         boolean sum1 = obj.canSumUnique(target, data);
         System.out.println("Sum RecUnique : " + sum1);
 
